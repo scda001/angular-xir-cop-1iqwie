@@ -1,0 +1,5 @@
+<h3>Cart</h3>
+
+<div class="cart-item" *ngFor="let item of items">
+  <span>{{ item.quantity }} x {{ item.asset.name }} total: {{ item.asset.currency }} {{ item.getValue() }}</span>
+</div>

@@ -1,0 +1,9 @@
+<h2>BusinessPartners</h2>
+
+<div *ngFor="let businessPartner of businessPartners; index as businessPartnerId">
+  <h3>
+      <a [title]="businessPartner.name">
+      {{ businessPartner.name }}
+    </a>
+  </h3>
+</div>
