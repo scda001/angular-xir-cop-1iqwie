@@ -1,11 +1,16 @@
 <h2>Assets</h2>
-<div *ngFor="let asset of assets; index as assetId">
-	<h3>
-		<a [title]="asset.name">
-			{{ asset.name }}
-		</a>
 
-		<input #quantity
+<!-- <form [formGroup]="checkoutForm"> -->
+
+<div *ngFor="let asset of assets; index as assetId">
+	<label for="quantity">
+			{{ asset.name }}
+	</label>
+
+    <!-- <input id="quantity" type="number" name="quantity" min="1" max="10000" 
+    (blur)="addToCart(quantity.value, asset)"> -->
+
+		<input #quantity type="number" min="1" max="10000"
     (blur)="addToCart(quantity.value, asset)"> 
 
 		<!-- <input type="number" id="quantity" name="quantity"
@@ -14,5 +19,6 @@
 		<!-- <button (click)="addToCart(quantity.value, asset)">
     Add to Cart
   </button> -->
-	</h3>
+
 </div>
+<!-- </form> -->
