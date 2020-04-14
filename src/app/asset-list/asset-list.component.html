@@ -10,8 +10,8 @@
     <!-- <input id="quantity" type="number" name="quantity" min="1" max="10000" 
     (blur)="addToCart(quantity.value, asset)"> -->
 
-		<input #quantity type="number" min="1" max="10000"
-    (blur)="addToCart(quantity.value, asset)"> 
+		<input #quantity type="number" min="1" max="10000" step="1"
+    (blur)="addToCart(quantity, asset)"> 
 
 		<!-- <input type="number" id="quantity" name="quantity"
        min="1" max="10000"> -->

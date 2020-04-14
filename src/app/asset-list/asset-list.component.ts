@@ -26,9 +26,12 @@ export class AssetListComponent implements OnInit {
     });
   }
   addToCart(quantity, asset) {
-    if (quantity > 0) {
-      var cartItem = new CartItem(quantity, asset);
+    /* window.alert(quantity.value + "|" + quantity.min + "|" + quantity.max); */
+    if (quantity.checkValidity() && quantity.value != "") {
+      var cartItem = new CartItem(quantity.value, asset);
       this.cartService.addToCart(cartItem);
+    } else {
+      window.alert("This quantity is invalid: " + asset.name + ": " + quantity.value);
     }
     /* window.alert("Your asset has been added to the cart!") */
   }
