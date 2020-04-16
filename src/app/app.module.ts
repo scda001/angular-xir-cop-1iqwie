@@ -15,7 +15,7 @@ import { OrderInfoComponent } from './order-info/order-info.component';
 import { ClientInfoComponent } from './client-info/client-info.component';
 import { BusinessPartnerListComponent } from './business-partner-list/business-partner-list.component';
 import { CartComponent } from './cart/cart.component';
-import { CartService } from './cart.service';
+import { CartService } from './cart/cart.service';
 import { AssetListComponent } from './asset-list/asset-list.component';
 
 @NgModule({

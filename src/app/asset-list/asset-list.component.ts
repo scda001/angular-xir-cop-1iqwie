@@ -2,8 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { FormBuilder } from "@angular/forms";
 import { assets } from "../assets";
-import { CartService } from "../cart.service";
-import { CartItem } from "../cart-item";
+import { CartItem } from "../cart/cart-item";
+import { CartService } from "../cart/cart.service";
 
 @Component({
   selector: "app-asset-list",
