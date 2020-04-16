@@ -30,6 +30,7 @@ export class AssetListComponent implements OnInit {
     if (quantity.checkValidity() && quantity.value != "") {
       var cartItem = new CartItem(quantity.value, asset);
       this.cartService.addToCart(cartItem);
+      console.log("cartItem added to cart.");
     } else {
       window.alert("This quantity is invalid: " + asset.name + ": " + quantity.value);
     }
