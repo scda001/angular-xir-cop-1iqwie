@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { registerLocaleData } from '@angular/common';
@@ -19,7 +20,7 @@ import { CartService } from './cart/cart.service';
 import { AssetListComponent } from './asset-list/asset-list.component';
 
 @NgModule({
-  imports:      [ BrowserModule, HttpClientModule, FormsModule, RouterModule.forRoot([
+  imports:      [ BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule, RouterModule.forRoot([
       { path: '', component: AssetListComponent },
       { path: 'cart', component: CartComponent }
     ]) ],

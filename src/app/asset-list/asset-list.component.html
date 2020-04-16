@@ -1,7 +1,5 @@
 <h2>Assets</h2>
 
-<!-- <form [formGroup]="checkoutForm"> -->
-
 <div *ngFor="let asset of assets; index as assetId">
 	<label for="quantity">
 			{{ asset.name }}
@@ -12,6 +10,7 @@
 
 		<input #quantity type="number" min="1" max="10000" step="1"
     (blur)="addToCart(quantity, asset)"> 
+    
 
 		<!-- <input type="number" id="quantity" name="quantity"
        min="1" max="10000"> -->
@@ -21,4 +20,24 @@
   </button> -->
 
 </div>
-<!-- </form> -->
+
+<form [formGroup]="checkoutForm" (ngSubmit)="onSubmit(checkoutForm.value)">
+	<div>
+		<label for="name">
+      Name
+    </label>
+		<input id="name" type="text" formControlName="name">
+  </div>
+
+	<div>
+		<label for="address">
+      Address
+    </label>
+		<input id="address" type="text" formControlName="address">
+  </div>
+	
+  <button class="button" type="submit">Purchase</button>
+
+</form>
+
+
