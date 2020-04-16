@@ -21,23 +21,23 @@
 
 </div>
 
-<form [formGroup]="checkoutForm" (ngSubmit)="onSubmit(checkoutForm.value)">
-	<div>
-		<label for="name">
-      Name
-    </label>
-		<input id="name" type="text" formControlName="name">
+<form [formGroup]="orderForm" (ngSubmit)="onSubmit(orderForm.controls.items)">
+	<div formArrayName="items"
+  *ngFor="let item of orderForm.get('items').controls; let i = index;">
+  <div class="container">
+  <div [formGroupName]="i">
+    <input formControlName="quantity" placeholder="Item quantity"> 
+    <!-- input formControlName="quantity" type="number" min="1" max="10000" step="1" -->
   </div>
-
-	<div>
-		<label for="address">
-      Address
-    </label>
-		<input id="address" type="text" formControlName="address">
+  <div *ngIf="!item.controls.quantity.valid">{{item.controls.quantity.status}} </div>
   </div>
+  Chosen qty: {{item.controls.quantity.value}}
+</div>
 	
   <button class="button" type="submit">Purchase</button>
 
 </form>
+
+
 
 
