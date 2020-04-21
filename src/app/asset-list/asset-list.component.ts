@@ -17,10 +17,8 @@ import { CartService } from "../cart/cart.service";
   styleUrls: ["./asset-list.component.css"]
 })
 export class AssetListComponent implements OnInit {
-  asset;
   orderForm: FormGroup;
   items: FormArray;
-
   assets = assets;
 
   constructor(
@@ -30,50 +28,52 @@ export class AssetListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    /*
     this.route.paramMap.subscribe(params => {
       this.asset = assets[+params.get("assetId")];
     });
+    */
     this.orderForm = this.formBuilder.group({
-      items: this.formBuilder.array([this.createItem()])
+      items: this.formBuilder.array([])
     });
-    this.addItem();
+    for (let asset of assets) {
+      this.addItem(asset);
+    }
   }
 
-  addItem(): void {
+  addItem(asset): void {
     this.items = this.orderForm.get("items") as FormArray;
-    this.items.push(this.createItem());
+    this.items.push(this.createItem(asset));
   }
 
-  addToCart(quantity, asset) {
+  addToCart(entry) {
     /* window.alert(quantity.value + "|" + quantity.min + "|" + quantity.max); */
-    if (quantity.value != null) {
-      var cartItem = new CartItem(quantity.value, asset);
+    if (entry.controls.quantity.value != "") {
+      var cartItem = new CartItem(entry.controls.quantity.value, entry.controls.asset.value);
       this.cartService.addToCart(cartItem);
       console.log("cartItem added to cart.");
-    } else {
-      window.alert(
-        "This quantity is invalid: " + asset.name + ": " + quantity.value
-      );
     }
-    /* window.alert("Your asset has been added to the cart!") */
   }
 
-  createItem(): FormGroup {
+  createItem(asset): FormGroup {
     return this.formBuilder.group({
+      asset: asset,
       quantity: new FormControl("", [Validators.pattern("^[1-9][0-9]*$")]),
-      message: ''
+      message: ""
     });
   }
 
-  onSubmit(customerData) {
+  onSubmit(order) {
     if (this.orderForm.valid) {
-      for (let entry of customerData.controls) {
+      this.cartService.clearCart();
+      for (let entry of order.controls) {
         console.log(entry.controls.quantity.value);
-        this.addToCart(entry.controls.quantity, assets[1]);
+        /* this.addToCart(entry.controls.quantity, assets[1]);*/
+        this.addToCart(entry);
       }
     } else {
-      window.alert("At least one value in form is invalid!")
+      window.alert("At least one value in form is invalid!");
     }
-    console.warn("Your order has been submitted", customerData);
+    console.warn("Your order has been submitted", order);
   }
 }
