@@ -15,6 +15,7 @@ createDb() {
     return {businessPartners};
   }
 
+/*
   // Overrides the genId method to ensure that a hero always has an id.
   // If the heroes array is empty,
   // the method below returns the initial number (11).
@@ -23,4 +24,5 @@ createDb() {
   genId(businessPartners: BusinessPartner[]): number {
     return businessPartners.length > 0 ? Math.max(...businessPartners.map(businessPartner => businessPartner.id)) + 1 : 11;
   }
+  */
 }
