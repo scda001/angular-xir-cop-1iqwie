@@ -49,7 +49,10 @@ export class AssetListComponent implements OnInit {
   addToCart(entry) {
     /* window.alert(quantity.value + "|" + quantity.min + "|" + quantity.max); */
     if (entry.controls.quantity.value != "") {
-      var cartItem = new CartItem(entry.controls.quantity.value, entry.controls.asset.value);
+      var cartItem = new CartItem(
+        entry.controls.quantity.value,
+        entry.controls.asset.value
+      );
       this.cartService.addToCart(cartItem);
       console.log("cartItem added to cart.");
     }
@@ -71,10 +74,12 @@ export class AssetListComponent implements OnInit {
         /* this.addToCart(entry.controls.quantity, assets[1]);*/
         this.addToCart(entry);
       }
+      window.alert(
+        "Your order has been added to cart. Please proceed to checkout."
+      );
+      console.info("Your order has been submitted", order);
     } else {
       window.alert("At least one value in form is invalid!");
     }
-    window.alert("Your order has been added to cart. Please proceed to checkout.");
-    console.info("Your order has been submitted", order);
   }
 }
