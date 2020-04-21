@@ -1,7 +1,16 @@
 <div>
 <h2>Client Information</h2>
 <input #lookupBox id="lookup-box" (input)="lookup(lookupBox.value)" />
+<!--
 <p>
     Business Partner: {{ this.businessPartner.name | async }} 
   </p>
+-->
+  <ul class="search-result">
+    <li *ngFor="let businessPartner of businessPartners | async" >
+      <a>
+        {{businessPartner.name}}
+      </a>
+    </li>
+  </ul>
 </div>

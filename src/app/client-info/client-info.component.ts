@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { businessPartners } from '../business-partners';
 
 import {
    debounceTime, distinctUntilChanged, switchMap
@@ -8,7 +7,6 @@ import {
 
 import { BusinessPartner } from '../business-partner';
 import { BusinessPartnerService } from '../business-partner.service';
-/* import { businessPartners } from "../business-partners"; */
 
 @Component({
   selector: 'app-client-info',
@@ -16,7 +14,7 @@ import { BusinessPartnerService } from '../business-partner.service';
   styleUrls: ['./client-info.component.css']
 })
 export class ClientInfoComponent implements OnInit {
-businessPartner: Observable<BusinessPartner[]>;
+businessPartners: Observable<BusinessPartner[]>;
 private searchTerms = new Subject<string>();
 
   constructor(private businessPartnerService: BusinessPartnerService) { }
@@ -29,9 +27,8 @@ private searchTerms = new Subject<string>();
 
   ngOnInit(): void {
     /*this.businessPartner = businessPartners[0];*/
-    console.info('ngOnInit1');
-
-    this.businessPartner = this.searchTerms.pipe(
+  
+    this.businessPartners = this.searchTerms.pipe(
       // wait 300ms after each keystroke before considering the term
       debounceTime(300),
 
@@ -42,7 +39,6 @@ private searchTerms = new Subject<string>();
       switchMap((key: string) => this.businessPartnerService.lookup(key))
     );
 
-    console.info('ngOnInit2');
   }
 
 }
