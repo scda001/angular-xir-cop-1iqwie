@@ -74,6 +74,7 @@ export class AssetListComponent implements OnInit {
     } else {
       window.alert("At least one value in form is invalid!");
     }
-    console.warn("Your order has been submitted", order);
+    window.alert("Your order has been added to cart. Please proceed to checkout.");
+    console.info("Your order has been submitted", order);
   }
 }
