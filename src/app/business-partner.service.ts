@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Observable, of, zip, forkJoin } from "rxjs";
+import { Observable, of, zip, combineLatest } from "rxjs";
 import { catchError, map, tap } from 'rxjs/operators';
 import { BusinessPartner } from "./business-partner";
 
@@ -13,14 +13,16 @@ export class BusinessPartnerService {
 
   lookup(term: string): Observable<BusinessPartner[]> {
     console.info('BP Service: ' + term);
-    const bp1 = this.http
+    const obsBp1Arr = this.http
       .get<BusinessPartner[]>(`${this.businessPartnerUrl}/?key=${term}`)
       .pipe(catchError(this.handleError<BusinessPartner[]>("lookup", [])));
-    /* const bp2 = this.http
+    console.info('obsBp1Arr: ', obsBp1Arr);
+     const obsBp2Arr = this.http
       .get<BusinessPartner[]>(`${this.businessPartnerUrl}/?name=${term}`)
       .pipe(catchError(this.handleError<BusinessPartner[]>("lookup", [])));
-    zip(bp1, bp2).subscribe(([bp1, bp2]) => bp3 = forkJoin([bp1, bp2])); */
-    return bp1;
+    ;
+    console.info('obsBp2Arr: ', obsBp2Arr);
+    return obsBp1Arr;
   }
 
 
