@@ -1,3 +1,8 @@
+const apiHost = 'www.snb.ch';
+const apiUrl = `http://${apiHost}/api`;
+
 export const environment = {
-  production: true
+  production: true,
+  apiHost,
+  apiUrl
 };

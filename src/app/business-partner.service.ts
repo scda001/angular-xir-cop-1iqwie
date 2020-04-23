@@ -1,22 +1,26 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Observable, of } from "rxjs";
+import { Observable, of, zip, forkJoin } from "rxjs";
 import { catchError, map, tap } from 'rxjs/operators';
 import { BusinessPartner } from "./business-partner";
 
 
 @Injectable({ providedIn: 'root' })
 export class BusinessPartnerService {
-  private businessPartnerUrl = "snb/businessPartners"; // URL to web api
+  private businessPartnerUrl = "static-data/business-partners"; // URL to web api
 
   constructor(private http: HttpClient) { }
 
-  lookup(key: string): Observable<BusinessPartner[]> {
-    console.info('BP Service: ' + key);
-    return this.http
-      .get<BusinessPartner[]>(`${this.businessPartnerUrl}/?key=${key}`)
+  lookup(term: string): Observable<BusinessPartner[]> {
+    console.info('BP Service: ' + term);
+    const bp1 = this.http
+      .get<BusinessPartner[]>(`${this.businessPartnerUrl}/?key=${term}`)
       .pipe(catchError(this.handleError<BusinessPartner[]>("lookup", [])));
-    /* return []; */
+    /* const bp2 = this.http
+      .get<BusinessPartner[]>(`${this.businessPartnerUrl}/?name=${term}`)
+      .pipe(catchError(this.handleError<BusinessPartner[]>("lookup", [])));
+    zip(bp1, bp2).subscribe(([bp1, bp2]) => bp3 = forkJoin([bp1, bp2])); */
+    return bp1;
   }
 
 

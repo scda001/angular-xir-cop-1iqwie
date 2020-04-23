@@ -12,7 +12,7 @@ createDb() {
       { id: 2, key: 'ubs', name: 'UBS' },
       { id: 3, key: 'cs', name: 'Credit-Suisse' },
     ];
-    return {businessPartners};
+    return {"business-partners": businessPartners};
   }
 
 /*
