@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Observable, of, zip, combineLatest } from "rxjs";
+import { Observable, combineLatest, of } from "rxjs";
 import { catchError, map, tap } from 'rxjs/operators';
 import { BusinessPartner } from "./business-partner";
 
@@ -12,16 +12,24 @@ export class BusinessPartnerService {
   constructor(private http: HttpClient) { }
 
   lookup(term: string): Observable<BusinessPartner[]> {
+    var bp3Arr: BusinessPartner[];
+    var obsBp3Arr: Observable<BusinessPartner[]>;
     console.info('BP Service: ' + term);
     const obsBp1Arr = this.http
       .get<BusinessPartner[]>(`${this.businessPartnerUrl}/?key=${term}`)
       .pipe(catchError(this.handleError<BusinessPartner[]>("lookup", [])));
     console.info('obsBp1Arr: ', obsBp1Arr);
+
      const obsBp2Arr = this.http
       .get<BusinessPartner[]>(`${this.businessPartnerUrl}/?name=${term}`)
       .pipe(catchError(this.handleError<BusinessPartner[]>("lookup", [])));
     ;
     console.info('obsBp2Arr: ', obsBp2Arr);
+    combineLatest(obsBp1Arr, obsBp2Arr).subscribe(([bp1Arr, bp2Arr]) => 
+    { console.info('bp1Arr:', bp1Arr ); console.info('bp2Arr:', bp2Arr ); console.info('bp1Arr.concat(bp2Arr): ', bp1Arr.concat(bp2Arr)); bp3Arr = bp1Arr.concat(bp2Arr); }
+    );
+    console.info('bp3Arr:', bp3Arr );
+    /* Problem: kann aus bp3Arr keinen Observable<BusinessPartner[] machen */
     return obsBp1Arr;
   }
 

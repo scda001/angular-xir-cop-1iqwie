@@ -21,6 +21,7 @@ export class ClientInfoComponent implements OnInit {
   lookup(key: string): void {
     this.searchTerms.next(key);
     console.info("key: " + key);
+    console.info("searchTerms: ", this.searchTerms);
   }
 
   ngOnInit(): void {
