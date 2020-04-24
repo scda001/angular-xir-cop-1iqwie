@@ -15,16 +15,25 @@ export class ClientInfoComponent implements OnInit {
   businessPartnersByKey: Observable<BusinessPartner[]>;
   businessPartnersByName: Observable<BusinessPartner[]>;
   businessPartners: BusinessPartner[];
+
+
   private searchTerms = new Subject<string>();
 
   constructor(private businessPartnerService: BusinessPartnerService) {}
 
   // Push a lookup key into the observable stream.
   lookup(key: string): void {
+    if (key) {
     this.searchTerms.next(key);
+    } else {
+      this.searchTerms.next();
+    }
     console.info("key: " + key);
-    console.info("searchTerms: ", this.searchTerms);
     console.info("BP[]: ", this.businessPartners);
+  }
+
+  equals(bp1: BusinessPartner, bp2: BusinessPartner): boolean {
+    return bp1.key === bp2.key;
   }
 
   ngOnInit(): void {
@@ -32,29 +41,53 @@ export class ClientInfoComponent implements OnInit {
 
     this.businessPartnersByKey = this.searchTerms.pipe(
       // wait 300ms after each keystroke before considering the term
-      debounceTime(300),
+      debounceTime(100),
 
       // ignore new term if same as previous term
       distinctUntilChanged(),
 
       // switch to new search observable each time the term changes
-      switchMap((key: string) => this.businessPartnerService.lookupByKey(key)), /* */
+      switchMap((key: string) =>
+        this.businessPartnerService.lookupByKey(key)
+      ) /* */
     );
 
     this.businessPartnersByName = this.searchTerms.pipe(
       // wait 300ms after each keystroke before considering the term
-      debounceTime(300),
+      debounceTime(100),
 
       // ignore new term if same as previous term
       distinctUntilChanged(),
 
       // switch to new search observable each time the term changes
-      switchMap((key: string) => this.businessPartnerService.lookupByName(key)), /* */
+      switchMap((name: string) =>
+        this.businessPartnerService.lookupByName(name)
+      )
     );
 
-    combineLatest(this.businessPartnersByKey, this.businessPartnersByName).subscribe(([bp1Arr, bp2Arr]) => 
-    { console.info('bp1Arr:', bp1Arr ); console.info('bp2Arr:', bp2Arr ); console.info('bp1Arr.concat(bp2Arr): ', this.businessPartners = bp1Arr.concat(bp2Arr)); }
-    );
-
+    combineLatest(
+      this.businessPartnersByKey,
+      this.businessPartnersByName
+    ).subscribe(([bp1Arr, bp2Arr]) => {
+      console.info("bp1Arr:", bp1Arr);
+      console.info("bp2Arr:", bp2Arr);
+      /* avoid duplicates */
+      var bp3Arr: BusinessPartner[] = [];
+      bp1Arr.forEach(item => bp3Arr.push(item));
+      for (let newItem of bp2Arr) {
+        let found: boolean = false;
+        for (let item of bp3Arr) {
+          if (this.equals(item, newItem)) {
+            found = true;
+            break;
+          }
+        };
+        if (!found || bp3Arr.length === 0 ) {
+          bp3Arr.push(newItem);
+        };
+      };
+      console.info("bp3Arr:", bp3Arr);
+      this.businessPartners = bp3Arr;
+    });
   }
 }

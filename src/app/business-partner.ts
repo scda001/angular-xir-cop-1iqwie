@@ -3,3 +3,4 @@ export interface BusinessPartner {
   key: string;
   name: string;
 }
+
