@@ -5,7 +5,7 @@
 	</p>
 	<input #lookupBox id="lookup-box" (input)="lookup(lookupBox.value)" />
 	<ul class="search-result">
-		<li *ngFor="let bp of businessPartners | async">
+		<li *ngFor="let bp of businessPartners | as">
 			<a>
 				{{bp.name}}
 			</a>

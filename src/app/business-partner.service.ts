@@ -11,26 +11,35 @@ export class BusinessPartnerService {
 
   constructor(private http: HttpClient) { }
 
-  lookup(term: string): Observable<BusinessPartner[]> {
-    var bp3Arr: BusinessPartner[];
-    var obsBp3Arr: Observable<BusinessPartner[]>;
-    console.info('BP Service: ' + term);
+  lookupByKey(key: string): Observable<BusinessPartner[]> {
+    console.info('BP Service: ' + key);
     const obsBp1Arr = this.http
-      .get<BusinessPartner[]>(`${this.businessPartnerUrl}/?key=${term}`)
-      .pipe(catchError(this.handleError<BusinessPartner[]>("lookup", [])));
+      .get<BusinessPartner[]>(`${this.businessPartnerUrl}/?key=${key}`)
+      .pipe(catchError(this.handleError<BusinessPartner[]>("lookupByKey", [])));
     console.info('obsBp1Arr: ', obsBp1Arr);
-
+/*
      const obsBp2Arr = this.http
-      .get<BusinessPartner[]>(`${this.businessPartnerUrl}/?name=${term}`)
+      .get<BusinessPartner[]>(`${this.businessPartnerUrl}/?name=${key}`)
       .pipe(catchError(this.handleError<BusinessPartner[]>("lookup", [])));
     ;
     console.info('obsBp2Arr: ', obsBp2Arr);
     combineLatest(obsBp1Arr, obsBp2Arr).subscribe(([bp1Arr, bp2Arr]) => 
     { console.info('bp1Arr:', bp1Arr ); console.info('bp2Arr:', bp2Arr ); console.info('bp1Arr.concat(bp2Arr): ', bp1Arr.concat(bp2Arr)); bp3Arr = bp1Arr.concat(bp2Arr); }
     );
-    console.info('bp3Arr:', bp3Arr );
+    console.info('bp3Arr:', bp3Arr ); */
     /* Problem: kann aus bp3Arr keinen Observable<BusinessPartner[] machen */
+    
     return obsBp1Arr;
+  }
+
+  lookupByName(name: string): Observable<BusinessPartner[]> {
+    console.info('BP Service: ' + name);
+    const obsBp2Arr = this.http
+      .get<BusinessPartner[]>(`${this.businessPartnerUrl}/?name=${name}`)
+      .pipe(catchError(this.handleError<BusinessPartner[]>("lookupByName", [])));
+    console.info('obsBp2Arr: ', obsBp2Arr);
+
+    return obsBp2Arr;
   }
 
 
