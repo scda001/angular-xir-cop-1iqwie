@@ -4,6 +4,12 @@
   width: 100%;
 }
 
+input {
+  min-width: 250px;
+}
+
 .example-full-width {
   width: 100%;
 }
+
+.hide-autocomplete { display: none; }
