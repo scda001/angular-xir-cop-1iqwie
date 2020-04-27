@@ -7,7 +7,7 @@ import { BusinessPartner } from './business-partner';
 })
 export class InMemBusinessPartnerService implements InMemoryDbService {
 createDb() {
-    const businessPartners = [
+    const businessPartners: BusinessPartner[] = [
       { id: 1, key: 'zkb', name: 'Zürcher Kantonalbank' },
       { id: 2, key: 'ubs', name: 'UBS' },
       { id: 3, key: 'cs', name: 'Credit-Suisse' },

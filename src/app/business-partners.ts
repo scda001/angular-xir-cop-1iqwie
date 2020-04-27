@@ -1,3 +1,4 @@
+/*
 export const businessPartners = [
   {
     id: 11,
@@ -15,3 +16,4 @@ export const businessPartners = [
     name: 'Credit-Suisse',
   }
 ];
+*/

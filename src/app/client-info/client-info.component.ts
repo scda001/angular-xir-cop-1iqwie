@@ -16,19 +16,18 @@ export class ClientInfoComponent implements OnInit {
   businessPartnersByName: Observable<BusinessPartner[]>;
   businessPartners: BusinessPartner[];
 
-
   private searchTerms = new Subject<string>();
 
   constructor(private businessPartnerService: BusinessPartnerService) {}
 
-  // Push a lookup key into the observable stream.
-  lookup(key: string): void {
-    if (key) {
-    this.searchTerms.next(key);
+  // Push a lookup term into the observable stream.
+  lookup(term: string): void {
+    if (term) {
+      this.searchTerms.next(term);
     } else {
-      this.searchTerms.next();
+      this.searchTerms.next("lkkasjdfkljasdfkljk"); /* ugly work around to get empty list for empty term */
     }
-    console.info("key: " + key);
+    console.info("term: " + term);
     console.info("BP[]: ", this.businessPartners);
   }
 
@@ -71,7 +70,7 @@ export class ClientInfoComponent implements OnInit {
     ).subscribe(([bp1Arr, bp2Arr]) => {
       console.info("bp1Arr:", bp1Arr);
       console.info("bp2Arr:", bp2Arr);
-      /* avoid duplicates */
+      /* avoid duplicates: */
       var bp3Arr: BusinessPartner[] = [];
       bp1Arr.forEach(item => bp3Arr.push(item));
       for (let newItem of bp2Arr) {
@@ -81,11 +80,11 @@ export class ClientInfoComponent implements OnInit {
             found = true;
             break;
           }
-        };
-        if (!found || bp3Arr.length === 0 ) {
+        }
+        if (!found || bp3Arr.length === 0) {
           bp3Arr.push(newItem);
-        };
-      };
+        }
+      }
       console.info("bp3Arr:", bp3Arr);
       this.businessPartners = bp3Arr;
     });
