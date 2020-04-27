@@ -1,43 +1,20 @@
 <h2>Assets</h2>
 
-<div *ngFor="let asset of assets; index as assetId">
-	<label for="quantity">
-			{{ asset.name }}
-	</label>
+<form [formGroup]="orderForm" (ngSubmit)="onSubmit(orderForm.controls.items)">
+	<div formArrayName="items" *ngFor="let item of orderForm.get('items').controls; let i = index;">
+		<div class="container">
+			<div [formGroupName]="i">
+				<label for="quantity">
+			    {{ assets[i].name }}
+	      </label>
+				<input formControlName="quantity" placeholder="Item quantity">
+				<!-- input formControlName="quantity" type="number" min="1" max="10000" step="1" -->
+			</div>
+			<div *ngIf="!item.controls.quantity.valid">{{item.controls.quantity.status}} </div>
+		</div>
+		<!-- Chosen qty: {{item.controls.quantity.value}} -->
+	</div>
 
-    <!-- <input id="quantity" type="number" name="quantity" min="1" max="10000" 
-    (blur)="addToCart(quantity.value, asset)"> -->
-
-		<input #quantity type="number" min="1" max="10000" step="1"
-    (blur)="addToCart(quantity, asset)"> 
-    
-
-		<!-- <input type="number" id="quantity" name="quantity"
-       min="1" max="10000"> -->
-
-		<!-- <button (click)="addToCart(quantity.value, asset)">
-    Add to Cart
-  </button> -->
-
-</div>
-
-<form [formGroup]="checkoutForm" (ngSubmit)="onSubmit(checkoutForm.value)">
-	<div>
-		<label for="name">
-      Name
-    </label>
-		<input id="name" type="text" formControlName="name">
-  </div>
-
-	<div>
-		<label for="address">
-      Address
-    </label>
-		<input id="address" type="text" formControlName="address">
-  </div>
-	
-  <button class="button" type="submit">Purchase</button>
+	<button class="button" type="submit">Purchase</button>
 
 </form>
-
-

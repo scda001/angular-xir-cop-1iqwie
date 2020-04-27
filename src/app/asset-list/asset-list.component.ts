@@ -1,6 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { FormBuilder } from "@angular/forms";
+import {
+  FormBuilder,
+  FormGroup,
+  FormArray,
+  FormControl,
+  Validators
+} from "@angular/forms";
 import { assets } from "../assets";
 import { CartItem } from "../cart/cart-item";
 import { CartService } from "../cart/cart.service";
@@ -11,46 +17,69 @@ import { CartService } from "../cart/cart.service";
   styleUrls: ["./asset-list.component.css"]
 })
 export class AssetListComponent implements OnInit {
-  asset;
-  checkoutForm;
-
+  orderForm: FormGroup;
+  items: FormArray;
   assets = assets;
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private cartService: CartService 
-  ) {
-    this.checkoutForm = this.formBuilder.group({
-      name: "",
-      address: ""
-    });
-  }
+    private cartService: CartService
+  ) {}
 
   ngOnInit() {
+    /*
     this.route.paramMap.subscribe(params => {
       this.asset = assets[+params.get("assetId")];
     });
+    */
+    this.orderForm = this.formBuilder.group({
+      items: this.formBuilder.array([])
+    });
+    for (let asset of assets) {
+      this.addItem(asset);
+    }
   }
 
-  addToCart(quantity, asset) {
+  addItem(asset): void {
+    this.items = this.orderForm.get("items") as FormArray;
+    this.items.push(this.createItem(asset));
+  }
+
+  addToCart(entry) {
     /* window.alert(quantity.value + "|" + quantity.min + "|" + quantity.max); */
-    if (quantity.checkValidity() && quantity.value != "") {
-      var cartItem = new CartItem(quantity.value, asset);
+    if (entry.controls.quantity.value != "") {
+      var cartItem = new CartItem(
+        entry.controls.quantity.value,
+        entry.controls.asset.value
+      );
       this.cartService.addToCart(cartItem);
       console.log("cartItem added to cart.");
-    } else {
-      window.alert(
-        "This quantity is invalid: " + asset.name + ": " + quantity.value
-      );
     }
-    /* window.alert("Your asset has been added to the cart!") */
   }
 
-  onSubmit(customerData) {
-    // Process checkout data here
-    this.checkoutForm.reset();
+  createItem(asset): FormGroup {
+    return this.formBuilder.group({
+      asset: asset,
+      quantity: new FormControl("", [Validators.pattern("^[1-9][0-9]*$")]),
+      message: ""
+    });
+  }
 
-    console.warn("Your order has been submitted", customerData);
+  onSubmit(order) {
+    if (this.orderForm.valid) {
+      this.cartService.clearCart();
+      for (let entry of order.controls) {
+        console.log(entry.controls.quantity.value);
+        /* this.addToCart(entry.controls.quantity, assets[1]);*/
+        this.addToCart(entry);
+      }
+      window.alert(
+        "Your order has been added to cart. Please proceed to checkout."
+      );
+      console.info("Your order has been submitted", order);
+    } else {
+      window.alert("At least one value in form is invalid!");
+    }
   }
 }

@@ -1,8 +1,8 @@
-const apiHost = 'www.snb.ch';
+const apiHost = 'localhost:8080';
 const apiUrl = `http://${apiHost}/api`;
 
 export const environment = {
-  production: true,
+  production: false,
   apiHost,
   apiUrl
 };
