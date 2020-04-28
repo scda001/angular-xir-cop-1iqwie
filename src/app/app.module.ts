@@ -10,6 +10,10 @@ import { LOCALE_ID } from '@angular/core';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemBusinessPartnerService } from './in-mem-business-partner.service';
 import { environment } from '../environments/environment';
+import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {DemoMaterialModule} from './business-partner-info/material-module';
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 
 registerLocaleData(localeDECH);
 
@@ -17,10 +21,10 @@ import { AppComponent } from './app.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { OrderInfoComponent } from './order-info/order-info.component';
 import { ClientInfoComponent } from './client-info/client-info.component';
-import { BusinessPartnerListComponent } from './business-partner-list/business-partner-list.component';
 import { CartComponent } from './cart/cart.component';
 import { CartService } from './cart/cart.service';
 import { AssetListComponent } from './asset-list/asset-list.component';
+import { BusinessPartnerInfoComponent } from './business-partner-info/business-partner-info.component';
 /*
 import { BusinessPartnerService } from './business-partner.service';
 import { HttpErrorHandler } from './http-error-handler.service';
@@ -31,6 +35,7 @@ import { MessageService } from './message.service';
   imports:      [ 
     BrowserModule, 
     HttpClientModule, 
+    DemoMaterialModule,
     FormsModule, 
     ReactiveFormsModule, 
     RouterModule.forRoot([
@@ -48,9 +53,8 @@ import { MessageService } from './message.service';
     TopBarComponent, 
     OrderInfoComponent, 
     ClientInfoComponent, 
-    BusinessPartnerListComponent, 
     CartComponent, 
-    AssetListComponent ],
+    AssetListComponent, BusinessPartnerInfoComponent ],
   bootstrap:    [ AppComponent ],
   providers: [
     { provide: LOCALE_ID, useValue: 'de-CH' }, CartService

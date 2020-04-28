@@ -48,7 +48,7 @@ export class ClientInfoComponent implements OnInit {
       // switch to new search observable each time the term changes
       switchMap((key: string) =>
         this.businessPartnerService.lookupByKey(key)
-      ) /* */
+      )
     );
 
     this.businessPartnersByName = this.searchTerms.pipe(

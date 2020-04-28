@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Observable} from "rxjs";
+import { Observable, combineLatest, of } from "rxjs";
 import { catchError, map, tap } from "rxjs/operators";
 import { BusinessPartner } from "./business-partner";
 
@@ -12,47 +12,70 @@ export class BusinessPartnerService {
 
   lookupByKey(key: string): Observable<BusinessPartner[]> {
     console.info("BP Service: " + key);
-    var obsBp1Arr: Observable<BusinessPartner[]> = Observable.create();
-    /* if (key) { */
-      obsBp1Arr = this.http
-        .get<BusinessPartner[]>(`${this.businessPartnerUrl}?key=^${key}`)
-        .pipe(
-          catchError(this.handleError<BusinessPartner[]>("lookupByKey", []))
-        );
-    /* } else {
-      console.info("key was empty.");
-    }
-    */
-    /*
-     const obsBp2Arr = this.http
-      .get<BusinessPartner[]>(`${this.businessPartnerUrl}/?name=${key}`)
-      .pipe(catchError(this.handleError<BusinessPartner[]>("lookup", [])));
-    ;
-    console.info('obsBp2Arr: ', obsBp2Arr);
-    combineLatest(obsBp1Arr, obsBp2Arr).subscribe(([bp1Arr, bp2Arr]) => 
-    { console.info('bp1Arr:', bp1Arr ); console.info('bp2Arr:', bp2Arr ); console.info('bp1Arr.concat(bp2Arr): ', bp1Arr.concat(bp2Arr)); bp3Arr = bp1Arr.concat(bp2Arr); }
-    );
-    console.info('bp3Arr:', bp3Arr ); */
-    /* Problem: kann aus bp3Arr keinen Observable<BusinessPartner[] machen */
+    const obsBp1Arr = this.http
+      .get<BusinessPartner[]>(`${this.businessPartnerUrl}?key=^${key}`)
+      .pipe(catchError(this.handleError<BusinessPartner[]>("lookupByKey", [])));
+
     console.info("obsBp1Arr: ", obsBp1Arr);
     return obsBp1Arr;
   }
 
   lookupByName(name: string): Observable<BusinessPartner[]> {
     console.info("BP Service: " + name);
-    var obsBp2Arr: Observable<BusinessPartner[]> = Observable.create();
-    /* if (name) { */
-      obsBp2Arr = this.http
-        .get<BusinessPartner[]>(`${this.businessPartnerUrl}?name=^${name}`)
-        .pipe(
-          catchError(this.handleError<BusinessPartner[]>("lookupByName", []))
-        );
-    /* } else {
-      console.info("name was empty.");
-    }
-    */
+    const obsBp2Arr = this.http
+      .get<BusinessPartner[]>(`${this.businessPartnerUrl}?name=^${name}`)
+      .pipe(
+        catchError(this.handleError<BusinessPartner[]>("lookupByName", []))
+      );
+
     console.info("obsBp2Arr: ", obsBp2Arr);
     return obsBp2Arr;
+  }
+
+  private equals(bp1: BusinessPartner, bp2: BusinessPartner): boolean {
+    return bp1.key === bp2.key;
+  }
+
+  union(a1: BusinessPartner[], a2: BusinessPartner[]): BusinessPartner[] {
+    /* avoid duplicates: */
+    let result: BusinessPartner[] = [];
+    console.info("start union: a1:" + a1 + " a2: " + a2);
+    a1.forEach(item => result.push(item));
+    for (let newItem of a2) {
+      let found: boolean = false;
+      for (let item of result) {
+        if (this.equals(item, newItem)) {
+          found = true;
+          break;
+        }
+      }
+      if (!found || result.length === 0) {
+        result.push(newItem);
+      }
+    }
+    console.info("result: " + result);
+    return result;
+  }
+
+  lookupByTerm(term: string): Observable<BusinessPartner[]> {
+    console.info("BP Service: " + term);
+
+    const obsBp1Arr = this.http
+      .get<BusinessPartner[]>(`${this.businessPartnerUrl}?key=^${term}`)
+      .pipe(catchError(this.handleError<BusinessPartner[]>("lookupByKey", [])));
+
+    const obsBp2Arr = this.http
+      .get<BusinessPartner[]>(`${this.businessPartnerUrl}?name=^${term}`)
+      .pipe(
+        catchError(this.handleError<BusinessPartner[]>("lookupByName", []))
+      );
+
+    const obsBp3Arr = combineLatest(obsBp1Arr, obsBp2Arr).pipe(
+      /*  map(([bpArr1, bpArr2]) => bpArr1.concat(bpArr2)) */
+      map(([bpArr1, bpArr2]) => this.union(bpArr1, bpArr2))
+    );
+
+    return obsBp3Arr;
   }
 
   /**

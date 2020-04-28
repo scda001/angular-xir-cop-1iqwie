@@ -1,0 +1,20 @@
+<p>
+		Business Partner: (Angular Material)
+</p>
+<form class="example-form">
+  <input type="text"
+         placeholder="Search for a business partner"
+         [formControl]="control"
+         [matAutocomplete]="auto"
+         (ngModelChange)="updatedVal($event)"
+         >
+         
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let bp of businessPartnersByTerm | async" (onSelectionChange)="onBPSelected(bp)" [value]="bp.name"
+      [ngClass]="{'hide-autocomplete': !showAutocomplete}">
+      {{bp.name}}
+    </mat-option>
+  </mat-autocomplete>
+
+</form>
+
