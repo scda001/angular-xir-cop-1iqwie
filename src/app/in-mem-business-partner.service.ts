@@ -11,6 +11,7 @@ createDb() {
       { id: 1, key: 'zkb', name: 'Zürcher Kantonalbank' },
       { id: 2, key: 'ubs', name: 'UBS' },
       { id: 3, key: 'cs', name: 'Credit-Suisse' },
+      { id:4, key:'ubp', name: 'Union Bancaire Privée'}
     ];
     return {"business-partners": businessPartners};
   }

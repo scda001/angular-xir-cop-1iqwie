@@ -21,7 +21,6 @@ export class BusinessPartnerInfoComponent implements OnInit {
 
   control = new FormControl();
 
-  selectedBP: string;
 
   /*
   streets: string[] = ['Champs-Élysées', 'Lombard Street', 'Abbey Road', 'Fifth Avenue'];
