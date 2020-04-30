@@ -14,6 +14,7 @@ import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {DemoMaterialModule} from './business-partner-info/material-module';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
+import {APP_BASE_HREF} from '@angular/common';
 
 registerLocaleData(localeDECH);
 
@@ -54,10 +55,13 @@ import { MessageService } from './message.service';
     OrderInfoComponent, 
     ClientInfoComponent, 
     CartComponent, 
-    AssetListComponent, BusinessPartnerInfoComponent ],
+    AssetListComponent, BusinessPartnerInfoComponent 
+    ],
   bootstrap:    [ AppComponent ],
   providers: [
-    { provide: LOCALE_ID, useValue: 'de-CH' }, CartService
+    { provide: LOCALE_ID, useValue: 'de-CH' }, 
+    { provide: APP_BASE_HREF, useValue : '/' },
+    CartService
   ]
 })
 export class AppModule { }

@@ -1,7 +1,7 @@
 <h2>Assets</h2>
 
 <form [formGroup]="orderForm" (ngSubmit)="onSubmit(orderForm.controls.items)">
-	<div formArrayName="items" *ngFor="let item of orderForm.get('items').controls; let i = index;">
+	<div formArrayName="items" *ngFor="let item of items.controls; let i = index;">
 		<div class="container">
 			<div [formGroupName]="i">
 				<label for="quantity">
