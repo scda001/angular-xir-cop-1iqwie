@@ -28,11 +28,6 @@ export class AssetListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    /*
-    this.route.paramMap.subscribe(params => {
-      this.asset = assets[+params.get("assetId")];
-    });
-    */
     this.orderForm = this.formBuilder.group({
       items: this.formBuilder.array([])
     });
@@ -47,7 +42,6 @@ export class AssetListComponent implements OnInit {
   }
 
   addToCart(entry) {
-    /* window.alert(quantity.value + "|" + quantity.min + "|" + quantity.max); */
     if (entry.controls.quantity.value != "") {
       var cartItem = new CartItem(
         entry.controls.quantity.value,
@@ -71,7 +65,6 @@ export class AssetListComponent implements OnInit {
       this.cartService.clearCart();
       for (let entry of order.controls) {
         console.log(entry.controls.quantity.value);
-        /* this.addToCart(entry.controls.quantity, assets[1]);*/
         this.addToCart(entry);
       }
       window.alert(

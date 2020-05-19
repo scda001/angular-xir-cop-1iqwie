@@ -21,16 +21,8 @@ export class BusinessPartnerInfoComponent implements OnInit {
 
   control = new FormControl();
 
-
-  /*
-  streets: string[] = ['Champs-Élysées', 'Lombard Street', 'Abbey Road', 'Fifth Avenue'];
-  filteredStreets: Observable<string[]>;
-  */
-
   ngOnInit() {
     this.businessPartnersByTerm = this.control.valueChanges.pipe(
-      /* startWith(''), 
-      map(value => this._filter(value)) */
       switchMap((key: string) => this.businessPartnerService.lookupByTerm(key))
     );
   }
@@ -42,17 +34,6 @@ export class BusinessPartnerInfoComponent implements OnInit {
       this.showAutocomplete = false;
     }
   }
-
-  /*
-  private _filter(value: string): string[] {
-    const filterValue = this._normalizeValue(value);
-    return this.streets.filter(street => this._normalizeValue(street).includes(filterValue));
-  }
-
-  private _normalizeValue(value: string): string {
-    return value.toLowerCase().replace(/\s/g, '');
-  }
-  */
 
   onBPSelected(value) {
     console.info('Input value: ', value);

@@ -71,8 +71,7 @@ export class BusinessPartnerService {
       );
 
     const obsBp3Arr = combineLatest(obsBp1Arr, obsBp2Arr).pipe(
-      /*  map(([bpArr1, bpArr2]) => bpArr1.concat(bpArr2)) */
-      map(([bpArr1, bpArr2]) => this.union(bpArr1, bpArr2))
+       map(([bpArr1, bpArr2]) => this.union(bpArr1, bpArr2))
     );
 
     return obsBp3Arr;
